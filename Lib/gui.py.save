@@ -220,7 +220,7 @@ class MainGui:
             encrypted_password = db_manager.encrypt_password(edit_window.password, key, iv)
 
             # Update the data in the database with the edited values
-            db_manager.edit_data_in_db([data[0], edit_window.username, encrypted_password, iv])
+            db_manager.edit_data_in_db([data[0], edit_window.username, encrypted_password, key, iv])
 
             # Refresh the tree to reflect the changes
             self.refresh_tree(tree)

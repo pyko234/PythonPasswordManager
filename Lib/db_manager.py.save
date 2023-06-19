@@ -139,16 +139,24 @@ def encrypt_master_password(password):
 
 # This function to Generate an encryption key from the global password and a random value
 def generate_encryption_key(random_value):
+    # Generate a random salt value
+    salt = os.urandom(16)
+
+    # Combine the hashed master password and random value
+    combined_data = global_password.encode() + random_value
+
     # Perform key derivation using PBKDF2 with SHA256
     kdf = PBKDF2HMAC(
         algorithm=hashes.SHA256(),
         length=32,
-        salt=global_password.encode(),
+        salt=salt,
         iterations=100000
     )
 
     # Use the derived key up to 32 bytes
-    key = kdf.derive(random_value)[:32]
+    key = kdf.derive(combined_data)[:32]
+
+    print(key)
 
     return key
 
@@ -292,8 +300,6 @@ def add_data_to_db(data):
 def edit_data_in_db(data):
     # Get connection and cursor objetcs
     conn, cursor = connect_to_database(path=location)
-
-    print(data)
 
     # Generate SQL qurey to update data
     sql = f"UPDATE passwords SET username = ?, password = ?, iv = ? WHERE id = {data[0]}"
