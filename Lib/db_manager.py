@@ -32,7 +32,8 @@ def check_os():
     if platform.startswith('win'):
         install_location = Path(f"{Path.home()}/PythonPasswordManager")
     elif platform.startswith('linux'):
-        install_location = Path('~/PythonPasswordManager')
+        home_dir = os.path.expanduser('~')
+        install_location = Path(os.path.join(home_dir, 'PythonPasswordManager'))
     elif platform.startswith('darwin'):
         install_location = Path('/Applications/PythonPasswordManager')
     else:
@@ -292,8 +293,6 @@ def add_data_to_db(data):
 def edit_data_in_db(data):
     # Get connection and cursor objetcs
     conn, cursor = connect_to_database(path=location)
-
-    print(data)
 
     # Generate SQL qurey to update data
     sql = f"UPDATE passwords SET username = ?, password = ?, iv = ? WHERE id = {data[0]}"

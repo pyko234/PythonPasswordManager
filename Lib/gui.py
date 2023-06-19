@@ -202,8 +202,6 @@ class MainGui:
             # Retrieve the data from the database using the item values
             data = db_manager.pull_data_from_user(item_values[1])
 
-            print(data)
-
             # Decrypt the password retrieved from the database
             decrypted_password = db_manager.decrypt_password(data[2], data[3])
 
